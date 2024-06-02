@@ -20,8 +20,6 @@ app.get("/", (req, res) => res.status(200).send("Hello World"));
 // add-player
 app.post("/player/addplayer", (req, res) => {
     const playerDetail = req.body
-
-    console.log("player details ====> ", playerDetail)
     addPlayer.create(playerDetail)
         .then((data) => { res.status(201).send(data); })
         .catch((err) => {
@@ -31,9 +29,12 @@ app.post("/player/addplayer", (req, res) => {
 });
 
 //get player details
-app.get("/player", (req,res) => {
-    addPlayer.find(playerDetail)
-        .then((data) => { res.status(201).send(data); })
+app.get("/player", (req, res) => {
+    addPlayer.find()
+        .then((data) => {
+            res.status(201).json(data);
+        }
+        )
         .catch((err) => {
             res.status(500).send(err.message);
             console.log(err);

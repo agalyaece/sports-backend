@@ -1,9 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const addPlayer = require("./addplayer");
-
-
+const addPlayer = require("./schema/addplayer");
+const teams = require("./schema/addteam")
+const internationalSchedule = require("./schema/addinternationalschedule")
+const internationalTeam = require("./schema/addinterteam");
+const leagueTeam = require("./schema/addleagueteam");
+const domesticTeam = require("./schema/addDomesticteam");
+const t20schedule = require ("./schema/addt20leagueschedule")
+const womenschedule = require("./schema/addwomenschedule")
 
 const app = express();
 const port = process.env.PORT || 3000
@@ -45,7 +50,7 @@ app.get("/player", (req, res) => {
 app.delete("/deleteplayer/:id", (req, res) => {
     const id = (req.params.id);
     addPlayer.findByIdAndDelete({ _id: id })
-        .then(() => res.json({msg:"player deleted successfully"}))
+        .then(() => res.json({ msg: "player deleted successfully" }))
         .catch((err) => res.json(err))
 })
 
@@ -64,12 +69,98 @@ app.get("/player/getOneplayer/:id", (req, res) => {
 app.put("/player/updateplayer/:id", (req, res) => {
     const id = req.params.id;
     addPlayer.findByIdAndUpdate(id, req.body, { new: true })
-        .then(() => res.status(200).json( {msg:"player Updated successfully"}))
+        .then(() => res.status(200).json({ msg: "player Updated successfully" }))
         .catch(err => {
             res.status(500).send(err.message);
             console.log(err);
         })
 })
 
+
+//get womenteam Details
+app.get("/teams", (req, res) => {
+    teams.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+//get international team Details
+app.get("/teams/international", (req, res) => {
+    internationalTeam.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+//get domestic team Details
+app.get("/teams/domestic", (req, res) => {
+    domesticTeam.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+
+//get league team Details
+app.get("/teams/league", (req, res) => {
+    leagueTeam.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+//add international schedule 
+app.get("/schedule/international", (req, res) => {
+    internationalSchedule.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+//add t20 schedule 
+app.get("/schedule/t20", (req, res) => {
+    t20schedule.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+
+//add women schedule 
+app.get("/schedule/women", (req, res) => {
+    womenschedule.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
 
 app.listen(port, () => console.log(`server is running on port ${port}`))

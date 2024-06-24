@@ -9,6 +9,8 @@ const leagueTeam = require("./schema/addleagueteam");
 const domesticTeam = require("./schema/addDomesticteam");
 const t20schedule = require ("./schema/addt20leagueschedule")
 const womenschedule = require("./schema/addwomenschedule")
+const t20WcTeam = require("./schema/addt20wcTeam");
+const t20WcPlayer = require("./schema/addt20wcTeamPlayer");
 
 const app = express();
 const port = process.env.PORT || 3000
@@ -158,6 +160,30 @@ app.get("/schedule/women", (req, res) => {
             res.status(201).json(data);
         })
         .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+
+//add t20 worldcup teams
+app.get("/t20WorldCup/teams", (req, res) => {
+    t20WcTeam.find()
+        .then((data) => {
+            res.status(201).json(data);
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+            console.log(err);
+        })
+})
+
+//get players in team
+app.get("/t20WorldCup/teams/:country", (req, res) => {
+    const country = req.params.country;
+    t20WcPlayer.find({"country": req.params.country})
+        .then(data => { res.status(201).send(data) })
+        .catch(err => {
             res.status(500).send(err.message);
             console.log(err);
         })
